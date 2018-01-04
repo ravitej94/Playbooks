@@ -1,0 +1,14 @@
+---
+- name: restart webservers
+  hosts: webserver
+  gather_facts: True
+  become: yes
+  remote_user: ec2-user
+  tasks:
+    - cron:
+       name: update hostname
+       weekday: 1
+       minute: 1
+       hour: 1
+       state: present
+       job: " hostname '{{ ansible_hostname }}' "
