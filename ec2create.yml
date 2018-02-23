@@ -5,13 +5,40 @@
     become: yes
     tasks:
 
+
+      - name: Create a security group
+        ec2_group:
+          name: sshfromansible
+          description: Security Group for webserver Servers
+          region: us-east-2
+          rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 172.31.14.230/32
+          rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+      - name: Disable ip
+        lineinfile:
+          region: us-east-2
+
       - name: Launch an instance
         ec2:
           keypair: office
           instance_type: t2.micro
-          image: ami-xxxx
+          image: ami-0b1e356e
           wait: yes
           count: 1
           region: us-east-2
-          vpc_subnet_id: subnet-xxxxx
-          group_id: "sg-xxxxx"
+          vpc_subnet_id: subnet-44cda12d
+          group: sshfromansible
+          assign_public_ip: no
+        register: ec2
+
+      - name: Add the newly created EC2 instance(s) to the local host group (located inside the directory)
+        lineinfile:
+                      dest="./hosts"
+                      regexp={{ item.public_ip }}
+                      insertafter="[webserver]" line={{ item.public_ip }}
+        with_items: '{{ ec2.instances }}'
