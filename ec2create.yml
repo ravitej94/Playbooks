@@ -1,0 +1,17 @@
+---
+  - hosts: local
+    connection: local
+    gather_facts: False
+    become: yes
+    tasks:
+
+      - name: Launch an instance
+        ec2:
+          keypair: office
+          instance_type: t2.micro
+          image: ami-xxxx
+          wait: yes
+          count: 1
+          region: us-east-2
+          vpc_subnet_id: subnet-xxxxx
+          group_id: "sg-xxxxx"
