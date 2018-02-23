@@ -1,0 +1,12 @@
+---
+  - name: Terminate an instance
+    hosts: local
+    connection: local
+
+    tasks:
+
+      - name: Terminate an instance
+        ec2:
+          state: 'absent'
+          region: us-east-2
+          instance_ids: 'i-xxxxx'
