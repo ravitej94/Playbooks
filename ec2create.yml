@@ -15,7 +15,7 @@
             - proto: tcp
               from_port: 22
               to_port: 22
-              cidr_ip: 172.31.14.230/32
+              cidr_ip: xxxxxxxx/32
           rules_egress:
             - proto: all
               cidr_ip: 0.0.0.0/0
@@ -27,11 +27,11 @@
         ec2:
           keypair: office
           instance_type: t2.micro
-          image: ami-0b1e356e
+          image: ami-cxxxxx
           wait: yes
           count: 1
           region: us-east-2
-          vpc_subnet_id: subnet-44cda12d
+          vpc_subnet_id: subnetid-xxxx
           group: sshfromansible
           assign_public_ip: no
         register: ec2
